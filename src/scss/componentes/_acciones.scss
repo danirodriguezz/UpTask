@@ -4,6 +4,7 @@
 .acciones {
     margin-top: 5rem;
     @include m.tablet {
+        width: 100%;
         display: flex;
         justify-content: space-between;
     }

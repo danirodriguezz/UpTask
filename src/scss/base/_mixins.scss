@@ -23,13 +23,12 @@
     padding: 1.5rem 4rem;
     color: $colorTexto;
     font-size: 1.6rem;
-    display: inline-block;
+    display: block;
     font-weight: 700;
     border: none;
     transition-property: background-color;
     transition-duration: .3s;
     text-align: center;
-    display: block;
     width: 100%;
     @include tablet {
         width: auto;
@@ -44,4 +43,15 @@
     display: grid;
     gap: $espaciado;
     grid-template-columns: repeat($columnas, 1fr);
+}
+
+@mixin textoDegradado($color) {
+    background: linear-gradient(to right, $color 0%, lighten($color, 40%) 100%);
+    color: transparent;
+    background-clip: text;
+    font-size: 7rem;
+    text-align: center;
+    @include tablet {
+        font-size: 10rem;
+    }
 }

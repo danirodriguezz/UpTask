@@ -25,5 +25,8 @@
     "gulp-webp": "^4.0.1",
     "sass": "^1.41.1",
     "terser": "^5.3.8"
+  },
+  "dependencies": {
+    "caniuse-lite": "^1.0.30001524"
   }
 }
