@@ -63,9 +63,16 @@ class ActiveRecord {
 
     // Busqueda Where con Columna 
     public static function where($columna, $valor) {
-        $query = "SELECT * FROM " . static::$tabla . " WHERE ${columna} = '${valor}'";
+        $query = "SELECT * FROM " . static::$tabla . " WHERE {$columna} = '{$valor}'";
         $resultado = self::consultarSQL($query);
         return array_shift( $resultado ) ;
+    }
+
+    // Busqueda Where con Columna obtenemos todos los registros 
+    public static function belongsTo($columna, $valor) { 
+        $query = "SELECT * FROM " . static::$tabla . " WHERE {$columna} = '{$valor}'";
+        $resultado = self::consultarSQL($query);
+        return $resultado;
     }
 
     // SQL para Consultas Avanzadas.

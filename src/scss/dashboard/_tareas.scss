@@ -1,0 +1,9 @@
+@use 'base/mixins' as m;
+@use 'base/variables' as v;
+
+.contenedor-nueva-tarea {
+    .agregar-tarea {
+        @include m.boton(v.$cyan, v.$blanco);
+        margin: 0 auto;
+    }
+}

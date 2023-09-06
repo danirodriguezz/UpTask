@@ -1,0 +1,27 @@
+@use 'base/mixins' as m;
+@use 'base/variables' as v;
+
+.barra {
+    background-color: v.$blanco;
+    padding: 1rem 2rem ;
+    box-shadow: 1px 12px 9px -13px rgba($color:  v.$negro, $alpha: .4);
+    @include m.tablet {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    p {
+        margin: 0;
+        font-size: 1.5rem;
+        span {
+            font-weight: 700;
+            color: v.$indigo;
+        }
+    }
+    .cerrar-sesion {
+        @include m.boton(darken(v.$indigo, 20%), v.$blanco);
+        font-size: 1.5rem;
+        padding: 1rem;
+        border-radius: .5rem;
+    }
+}

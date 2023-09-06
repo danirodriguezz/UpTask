@@ -12,4 +12,14 @@ CREATE TABLE usuarios(
     password VARCHAR(60) NOT NULL,
     token VARCHAR(15),
     confirmado TINYINT(1)   
-)
+);
+
+CREATE TABLE proyectos(
+    id INT(11) AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    proyecto VARCHAR(255),
+    url VARCHAR(32),
+    propietarioid INT NOT NULL,
+    FOREIGN KEY (propietarioid) REFERENCES usuarios(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
