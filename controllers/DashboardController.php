@@ -67,6 +67,7 @@ class DashboardController
         $proyecto = Proyecto::where("url", $token);
         if ($proyecto->propietarioid !== $_SESSION["id"]) header("Location: /dashboard");
         $script = "<script src='build/js/dashboard.js'></script>";
+        $script .= " <script src='build/js/tareas.js'></script>";
         $router->render("dashboard/proyecto", [
             "titulo" => $proyecto->proyecto,
             "script" => $script

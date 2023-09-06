@@ -20,7 +20,7 @@
                 <label for="password2">Repite tu Password</label>
                 <input type="password" id="password2" placeholder="Repite Tu Password" name="password2" />
             </div>
-            <input type="submit" class="boton" value="Iniciar Sesión">
+            <input type="submit" class="boton" value="Crear Cuenta">
         </form>
         <div class="acciones">
             <a href="/">¿Ya Tenias una Cuenta? Inicia Sesión </a>

@@ -1,8 +1,12 @@
 @use 'base/mixins' as m;
 @use 'base/variables' as v;
 .no-proyectos {
+    text-align: center;
     a {
         color: v.$indigo;
+        text-decoration: underline;
+        text-decoration-style: wavy;
+        text-decoration-color: lighten($color: v.$indigo, $amount: 20%);
     }
 }
 .listado-proyectos {
