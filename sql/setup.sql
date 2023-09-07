@@ -23,3 +23,13 @@ CREATE TABLE proyectos(
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
+CREATE TABLE tareas(
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    nombre VARCHAR(255),
+    estado TINYINT(1),
+    proyectoId INT(11) NOT NULL,
+    FOREIGN KEY (proyectoId) REFERENCES proyectos(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);

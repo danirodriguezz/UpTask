@@ -33,6 +33,13 @@
                 display: flex;
             }
         }
+        input[type="submit"] {
+            margin-left: 0;
+        };
+        input[type="text"] {
+            border: 1px solid v.$gris;
+            border-radius: .5rem;
+        }
         .submit-nueva-tarea {
             @include m.boton(v.$indigo, v.$blanco);
             margin-bottom: 1rem;
