@@ -13,14 +13,14 @@
             const resultado = await respuesta.json();
             tareas = resultado.tareas;
             mostrarTareas();
-        } catch(error) {
+        } catch (error) {
             console.log(error);
-        }   
+        }
     };
 
     function mostrarTareas() {
         limpiarTareas();
-        if(tareas.length === 0) {
+        if (tareas.length === 0) {
             const contenedorTareas = document.querySelector("#listado-tareas");
             const textoNoTareas = document.createElement("LI");
             textoNoTareas.textContent = "No hay Tareas";
@@ -51,14 +51,17 @@
             btnEstadoTarea.classList.add(`${estados[tarea.estado].toLowerCase()}`);
             btnEstadoTarea.dataset.estadoTarea = tarea.estado;
             btnEstadoTarea.textContent = estados[tarea.estado];
-            btnEstadoTarea.onclick = function() {
-                cambiarEstadoTarea({...tarea});
+            btnEstadoTarea.onclick = function () {
+                cambiarEstadoTarea({ ...tarea });
             }
             //Creamos el boton de eliminar tarea
             const btnEliminarTarea = document.createElement("BUTTON");
             btnEliminarTarea.classList.add("eliminar-tarea");
             btnEliminarTarea.dataset.idTarea = tarea.id;
             btnEliminarTarea.textContent = "Eliminar";
+            btnEliminarTarea.onclick = function () {
+                confirmarEliminarTarea({ ...tarea });
+            };
             //Agregamos a opcinesDiv los botones de las tarea
             opcionesDiv.appendChild(btnEstadoTarea);
             opcionesDiv.appendChild(btnEliminarTarea);
@@ -153,7 +156,7 @@
             const resultado = await respuesta.json();
             // console.log(resultado);
             mostrarAlerta(resultado.mensaje, resultado.tipo, document.querySelector(".formulario legend"));
-            if(resultado.tipo === "exito") {
+            if (resultado.tipo === "exito") {
                 const modal = document.querySelector(".modal");
                 setTimeout(() => {
                     const formulario = document.querySelector(".formulario");
@@ -166,7 +169,7 @@
                 const tareasObj = {
                     id: String(resultado.id),
                     nombre: tarea,
-                    estado:"0",
+                    estado: "0",
                     proyectoId: resultado.proyectoId
                 };
                 tareas = [...tareas, tareasObj];
@@ -185,7 +188,7 @@
     }
 
     async function actualizarTarea(tarea) {
-        const {estado, id, nombre, proyectoId} = tarea;
+        const { estado, id, nombre, proyectoId } = tarea;
         const datos = new FormData();
         datos.append("id", id);
         datos.append("nombre", nombre);
@@ -199,21 +202,21 @@
                 body: datos
             });
             const resultado = await respuesta.json();
-            if(resultado.respuesta.tipo === "exito") {
+            if (resultado.respuesta.tipo === "exito") {
                 mostrarAlerta(
-                    resultado.respuesta.mensaje, 
+                    resultado.respuesta.mensaje,
                     resultado.respuesta.tipo,
                     document.querySelector(".contenedor-nueva-tarea")
                 );
                 tareas = tareas.map(tareaMemoria => {
-                    if(tareaMemoria.id === id) {
+                    if (tareaMemoria.id === id) {
                         tareaMemoria.estado = estado
                     };
                     return tareaMemoria;
                 });
                 mostrarTareas();
             }
-        }catch(error) {
+        } catch (error) {
             console.log(error);
         }
     }
@@ -226,8 +229,53 @@
 
     function limpiarTareas() {
         const listadoTareas = document.querySelector("#listado-tareas");
-        while(listadoTareas.firstChild) {
+        while (listadoTareas.firstChild) {
             listadoTareas.removeChild(listadoTareas.firstChild);
+        }
+    }
+
+    function confirmarEliminarTarea(tarea) {
+        Swal.fire({
+            title: '¿Seguro que quieres eliminarlo?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6b7280',
+            cancelButtonText: "Cancelar",
+            confirmButtonText: 'Si, elimínalo!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                eliminarTarea(tarea);
+            }
+        })
+    }
+
+    async function eliminarTarea(tarea) {
+        const { estado, id, nombre, proyectoId } = tarea;
+        const datos = new FormData();
+        datos.append("id", id);
+        datos.append("nombre", nombre);
+        datos.append("estado", estado);
+        datos.append("proyectoId", obtenerProyecto());
+
+        try {
+            const url = "/api/tareas/eliminar";
+            const respuesta = await fetch(url, {
+                method: "POST",
+                body: datos
+            });
+            const resultado = await respuesta.json();
+            if(resultado) {
+                tareas = tareas.filter(tareaMemoria => tareaMemoria.id !== tarea.id);
+                mostrarTareas();
+                Swal.fire(
+                    'Eliminado!',
+                    'Tu tarea ha sido eliminada.',
+                    'success'
+                );
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
 })();

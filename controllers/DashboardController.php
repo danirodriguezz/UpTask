@@ -25,7 +25,7 @@ class DashboardController
         session_start();
         isAuth();
         $alertas = [];
-        $script = "<script src='build/js/dashboard.js'></script>";
+        $script = "<script src='build/js/dashboard.js'></script>" ;
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $proyecto = new Proyecto($_POST);
             //validación
@@ -51,7 +51,7 @@ class DashboardController
     {
         session_start();
         isAuth();
-        $script = "<script src='build/js/dashboard.js'></script>";
+        $script = " <script src='build/js/dashboard.js'></script> ";
         $router->render("dashboard/perfil", [
             "titulo" => "Perfil",
             "script" => $script
@@ -68,6 +68,7 @@ class DashboardController
         if ($proyecto->propietarioid !== $_SESSION["id"]) header("Location: /dashboard");
         $script = "<script src='build/js/dashboard.js'></script>";
         $script .= " <script src='build/js/tareas.js'></script>";
+        $script .= " <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
         $router->render("dashboard/proyecto", [
             "titulo" => $proyecto->proyecto,
             "script" => $script
