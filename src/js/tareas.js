@@ -1,7 +1,70 @@
 (function () {
+    obtenerTareas();
     //Boton para mostrar el Modal para Agregar Tarea
     const nuevaTareaBtn = document.querySelector("#agregar-tarea");
     nuevaTareaBtn.addEventListener("click", mostrarFormulario);
+
+    async function obtenerTareas() {
+        try {
+            const id = obtenerProyecto();
+            const url = `/api/tareas?url=${id}`;
+            const respuesta = await fetch(url);
+            const resultado = await respuesta.json();
+            const { tareas } = resultado;
+            mostrarTareas(tareas);
+        } catch(error) {
+            console.log(error);
+        }   
+    };
+
+    function mostrarTareas(tareas) {
+        if(tareas.length === 0) {
+            const contenedorTareas = document.querySelector("#listado-tareas");
+            const textoNoTareas = document.createElement("LI");
+            textoNoTareas.textContent = "No hay Tareas";
+            textoNoTareas.classList.add("textoNoTareas");
+            contenedorTareas.appendChild(textoNoTareas);
+            return;
+        };
+
+        const estados = {
+            0: "Pendiente",
+            1: "Completa"
+        };
+
+        tareas.forEach(tarea => {
+            //Creamos el contenedor donde guardaremos las tareas
+            const contenedorTarea = document.createElement("LI");
+            contenedorTarea.dataset.tareaID = tarea.id;
+            contenedorTarea.classList.add("tarea");
+            //Ahora creamos el parrafo que contendrá el nombre de la tarea
+            const nombreTarea = document.createElement("P");
+            nombreTarea.textContent = tarea.nombre
+            //Tambien creamos un div para las opciones de estado de una tarea
+            const opcionesDiv = document.createElement("DIV");
+            opcionesDiv.classList.add("opciones");
+            //Creamos los botones de estado
+            const btnEstadoTarea = document.createElement("BUTTON");
+            btnEstadoTarea.classList.add("estado-tarea");
+            btnEstadoTarea.classList.add(`${estados[tarea.estado].toLowerCase()}`);
+            btnEstadoTarea.dataset.estadoTarea = tarea.estado;
+            btnEstadoTarea.textContent = estados[tarea.estado];
+            //Creamos el boton de eliminar tarea
+            const btnEliminarTarea = document.createElement("BUTTON");
+            btnEliminarTarea.classList.add("eliminar-tarea");
+            btnEliminarTarea.dataset.idTarea = tarea.id;
+            btnEliminarTarea.textContent = "Eliminar";
+            //Agregamos a opcinesDiv los botones de las tarea
+            opcionesDiv.appendChild(btnEstadoTarea);
+            opcionesDiv.appendChild(btnEliminarTarea);
+            //Ahora agregamos al contenedorTarea el nombre de la tareay despues agregamos opcionesDiv
+            contenedorTarea.appendChild(nombreTarea);
+            contenedorTarea.appendChild(opcionesDiv);
+            // Y por ultimo insertamos en cada contenedorTareas el contenedor de cada tarea
+            const contenedorTareas = document.querySelector("#listado-tareas");
+            contenedorTareas.appendChild(contenedorTarea);
+        });
+    };
 
     function mostrarFormulario() {
         const modal = document.createElement("DIV");

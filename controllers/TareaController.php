@@ -9,6 +9,17 @@ class TareaController
 {
     public static function index()
     {
+        session_start();
+        $proyectoID = $_GET["url"];
+        if(!$proyectoID) {
+            header("Location: /dashboard");
+        };
+        $proyecto = Proyecto::where("url", $proyectoID);
+        if(!$proyecto || $proyecto->propietarioid !== $_SESSION["id"]) {
+            header("Location: /dashboard");
+        };
+        $tareas = Tarea::belongsTo("proyectoId", $proyecto->id);
+        echo json_encode(["tareas" => $tareas]);
     }
 
     public static function crear()
