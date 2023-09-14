@@ -1,0 +1,41 @@
+@use 'base/mixins' as m;
+@use 'base/variables' as v;
+
+.filtros {
+    background-color: darken($color: v.$grisClaro, $amount: 5%);
+    margin-top: 2rem;
+    border-radius: 1rem;
+    padding: 2rem;
+    .filtros-inputs {
+        @include m.desktop {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+    }
+    h2 {
+        color: v.$indigo;
+        font-size: 2.8rem;
+        @include m.desktop {
+            margin: 0;
+        }
+    }
+    .campo {
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        @include m.desktop {
+            margin: 0;
+            gap: 1rem;
+        }
+    }
+    input[type="radio"] {
+        &:hover {
+            cursor: pointer;
+        }
+        accent-color: v.$indigo;
+        width: 2rem;
+        height: 2rem;
+    }
+}
