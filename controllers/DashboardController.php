@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Model\Proyecto;
+use Model\Usuario;
 use MVC\Router;
 
 class DashboardController
@@ -25,7 +26,7 @@ class DashboardController
         session_start();
         isAuth();
         $alertas = [];
-        $script = "<script src='build/js/dashboard.js'></script>" ;
+        $script = "<script src='build/js/dashboard.js'></script>";
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $proyecto = new Proyecto($_POST);
             //validación
@@ -51,10 +52,34 @@ class DashboardController
     {
         session_start();
         isAuth();
+        $alertas = [];
+        $usuario = Usuario::find($_SESSION["id"]);
         $script = " <script src='build/js/dashboard.js'></script> ";
+
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            $usuario->sincronizar($_POST);
+            $alertas = $usuario->validarPerfil();
+            if (empty($alertas)) {
+                //Comporbar si existe un Usuario
+                $existeUsuario = Usuario::where("email", $usuario->email);
+                if ($existeUsuario && $existeUsuario->id !== $usuario->id) {
+                    Usuario::setAlerta("error", "El email ya esta registrado");
+                    $alertas = $usuario->getAlertas();
+                } else {
+                    //Guardar los cambios
+                    $usuario->guardar();
+                    Usuario::setAlerta("exito", "Guardado Correctamente");
+                    $alertas = $usuario->getAlertas();
+                    //Asignar el nuevo nombre a la sesion
+                    $_SESSION["nombre"] = $usuario->nombre;
+                }
+            }
+        }
         $router->render("dashboard/perfil", [
             "titulo" => "Perfil",
-            "script" => $script
+            "script" => $script,
+            "alertas" => $alertas,
+            "usuario" => $usuario
         ]);
     }
     public static function proyecto(Router $router)
@@ -72,6 +97,42 @@ class DashboardController
         $router->render("dashboard/proyecto", [
             "titulo" => $proyecto->proyecto,
             "script" => $script
+        ]);
+    }
+
+    public static function cambiar_password(Router $router)
+    {
+        session_start();
+        isAuth();
+        $alertas = [];
+        $script = "<script src='build/js/dashboard.js'></script>";
+        if($_SERVER["REQUEST_METHOD"] === "POST") {
+            $usuario = Usuario::find("id", $_SESSION["id"]);
+            $passwordNuevo = $_POST["password_nuevo"];
+            $passwordActual = $_POST["password_actual"];
+            $alertas = $usuario->nuevo_password($passwordActual, $passwordNuevo);
+            if(empty($alertas)) {
+                $resultado = $usuario->comprobar_password($passwordActual);
+                if($resultado) {
+                    //Asignamos el nuevo password
+                    $usuario->password = $passwordNuevo;
+                    $usuario->hashPassword();
+                    //Guardamos los cambios
+                    $resultado = $usuario->guardar();
+                    if($resultado) {
+                        Usuario::setAlerta("exito", "Contraseña cambiada con exito");
+                        $alertas = $usuario->getAlertas();
+                    }
+                } else {
+                    Usuario::setAlerta("error", "La contraseña es incorrecta");
+                    $alertas = $usuario->getAlertas();
+                }
+            }
+        }
+        $router->render("dashboard/cambiar-password", [
+            "titulo" => "Cambiar Password",
+            "script" => $script,
+            "alertas" => $alertas
         ]);
     }
 }

@@ -27,4 +27,10 @@
             padding: 1.5rem;
         }
     }
+    .enlace {
+        color: v.$indigo;
+        &:hover {
+            color: darken($color: v.$indigo, $amount: 20%);
+        }
+    }
 }

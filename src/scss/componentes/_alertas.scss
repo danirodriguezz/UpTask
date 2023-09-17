@@ -7,7 +7,7 @@
     font-weight: 900;
     margin: 1rem;
     font-size: 1.3rem;
-    max-width: 80rem;
+    max-width: auto;
     &.error {
         background-color: lighten($color: v.$rojo, $amount: 60%);
         border-left: .5rem solid v.$rojo;
