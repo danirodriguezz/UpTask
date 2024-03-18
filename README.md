@@ -20,9 +20,16 @@ $ source sql/setup.sql
 ```
 
 ### Inicio del Servidor
-1. Abre una terminal y navega hasta la carpeta `public` del proyecto.
+1. Instala las dependencias de npm y composer
+```bash
+$ npm install
+```
+```bash
+$ composer install
+```
+2. Abre una terminal y navega hasta la carpeta `public` del proyecto.
 
-2. Ejecuta el siguiente comando para iniciar el servidor PHP en el puerto 8000:
+3. Ejecuta el siguiente comando para iniciar el servidor PHP en el puerto 8000:
 
 ```bash
 $ php -S localhost:8000
