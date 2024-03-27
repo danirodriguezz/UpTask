@@ -37,3 +37,17 @@ $ php -S localhost:8000
 ## Acceso a la Aplicación
 Una vez completados estos pasos, podrás acceder a UpTask en tu navegador a través de la siguiente dirección:
 [http://localhost:8000](http://localhost:8000)
+
+## Mokups de la aplicación
+
+### Tamaño escritorio
+
+![Mockup de escitorio](./mockups/e1.png)
+
+![Mockup de escitorio](./mockups/e2.png)
+
+### Tamaño movil
+
+![Mockup de escitorio](./mockups/m1.png)
+
+![Mockup de escitorio](./mockups/m2.png)
